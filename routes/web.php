@@ -18,6 +18,14 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get("/admin", function(){
+    return Inertia::render("Admin/Index");
+})->middleware(['auth', 'verified'])->name('admin.index');
+
+Route::resource("admin/colecciones", \App\Http\Controllers\ColeccionController::class)->middleware(['auth', 'verified'])->parameters(['colecciones' => 'coleccion']);
+Route::resource("admin/acabados", \App\Http\Controllers\AcabadoController::class)->middleware(['auth', 'verified']);
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

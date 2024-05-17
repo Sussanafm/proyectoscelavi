@@ -1,0 +1,9 @@
+<?php
+return[
+    "Blanco",
+    "Beige",
+    "Roble",
+    "Marrón",
+    "Gris",
+    "Negro"
+    ];
