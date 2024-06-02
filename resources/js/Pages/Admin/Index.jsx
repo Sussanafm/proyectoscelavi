@@ -13,21 +13,35 @@ export default function Index({ auth }) {
         >
             <Head title="Panel" />
 
-            <div className="py-12">
+            <div className="py-36">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 flex flex-wrap justify-center">
-                            <div className="artboard artboard-horizontal phone-1 bg-neutral-content/100 mx-2 mb-2 flex items-center justify-center">
-                                <Link href={route('colecciones.index')}>
-                                Colecciones
-                                </Link>
+                    <div className="p-6 text-gray-900 flex flex-wrap justify-between">
+                            <div className="main-boxarea">
+                                <div className="boxarea">
+                                    <div className="boxarea-img">
+                                        <img src="/storage/images/img/COLORADO-CEMENT-mockup_new.jpg" alt="Imagen Colecciones"/>
+                                    </div>
+                                </div>
+                                <div className="boxarea-content text-center h-20">
+                                    <Link href={route('colecciones.index')}>
+                                        Colecciones
+                                    </Link>
+                                </div>
                             </div>
-                            <div className="artboard artboard-horizontal phone-1 bg-neutral-content/100 mx-2 mb-2 flex items-center justify-center">
-                                <Link href={route('acabados.index')}>
-                                    Acabados
-                                </Link>
+
+                            <div className="main-boxarea">
+                                <div className="boxarea">
+                                    <div className="boxarea-img">
+                                        <img src="/storage/images/img/SCELAVI-VOSS-GREY_MOCKUP.jpg" alt="Imagen Acabados"/>
+                                    </div>
+                                </div>
+                                <div className="boxarea-content text-center h-20">
+                                    <Link href={route('acabados.index')}>
+                                        Acabados
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
+
                     </div>
                 </div>
             </div>

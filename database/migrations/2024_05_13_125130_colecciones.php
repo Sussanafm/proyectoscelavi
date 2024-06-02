@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("wearlayer");
             $table->string("typology");
             $table->string("total_thickness");
+            $table->string("imagen");
             $table->timestamps();
 
         });

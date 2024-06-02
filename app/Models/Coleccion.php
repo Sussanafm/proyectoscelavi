@@ -16,6 +16,7 @@ class Coleccion extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'imagen',
         'nombre',
         'formato',
         'thickness',
@@ -27,6 +28,23 @@ class Coleccion extends Model
     public function acabados()
     {
         return $this->hasMany(Acabado::class);
+    }
+    /**
+     * Get the column names for the table.
+     *
+     * @return array
+     */
+    public static function getColumnNames()
+    {
+        return [
+            'Imagen',
+            'Nombre',
+            'Formato',
+            'Thickness',
+            'Wearlayer',
+            'Typology',
+            'Total thickness',
+        ];
     }
 
 }

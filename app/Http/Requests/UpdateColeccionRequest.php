@@ -22,12 +22,40 @@ class UpdateColeccionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "nombre" =>"required|max:255",
-            "formato" =>"required|max:255",
-            "thickness" =>"required|max:255",
-            "wearlayer" =>"required|max:255",
-            "typology" =>"required|max:255",
-            "total_thickness" =>"required|max:255"
+            "nombre" => "required|max:255",
+            "formato" => "required|max:255",
+            "thickness" => "required|max:255",
+            "wearlayer" => "required|max:255",
+            "typology" => "required|max:255",
+            "total_thickness" => "required|max:255",
+            'imagen_new' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'nombre.required' => 'El campo nombre es obligatorio.',
+            'nombre.max' => 'El campo nombre no puede exceder de 255 caracteres.',
+            'formato.required' => 'El campo formato es obligatorio.',
+            'formato.max' => 'El campo formato no puede exceder de 255 caracteres.',
+            'thickness.required' => 'El campo grosor es obligatorio.',
+            'thickness.max' => 'El campo grosor no puede exceder de 255 caracteres.',
+            'wearlayer.required' => 'El campo capa de desgaste es obligatorio.',
+            'wearlayer.max' => 'El campo capa de desgaste no puede exceder de 255 caracteres.',
+            'typology.required' => 'El campo tipología es obligatorio.',
+            'typology.max' => 'El campo tipología no puede exceder de 255 caracteres.',
+            'total_thickness.required' => 'El campo grosor total es obligatorio.',
+            'total_thickness.max' => 'El campo grosor total no puede exceder de 255 caracteres.',
+            'imagen_new.image' => 'El archivo debe ser una imagen.',
+            'imagen_new.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif, svg.',
+            'imagen_new.max' => 'La imagen no puede exceder de 2048 kilobytes.',
         ];
     }
 }
+

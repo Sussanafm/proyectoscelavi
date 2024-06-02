@@ -22,7 +22,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Información del Perfil</h2>
+                <h2 className="text-lg font-medium text-primary-600">Información del Perfil</h2>
 
                 <p className="mt-1 text-sm text-gray-600">
                     Actualiza la información de perfil y la dirección de correo electrónico de tu cuenta.

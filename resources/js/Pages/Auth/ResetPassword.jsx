@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
+import GuestLayout from '@/Layouts/GuestLayoutOld.jsx';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -65,7 +65,7 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel htmlFor="password_confirmation" value="Confirmar Contraseña" />
 
                     <TextInput
                         type="password"
@@ -82,7 +82,7 @@ export default function ResetPassword({ token, email }) {
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
+                        Restablecer contraseña
                     </PrimaryButton>
                 </div>
             </form>

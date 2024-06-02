@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
+import GuestLayout from '@/Layouts/GuestLayoutOld.jsx';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -73,7 +73,7 @@ export default function Login({ status, canResetPassword }) {
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
+                        <span className="ms-2 text-sm text-gray-600">Recuérdame</span>
                     </label>
                 </div>
 
@@ -83,12 +83,12 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Forgot your password?
+                            ¿Olvidaste  tu contraseña?
                         </Link>
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                        Iniciar sesión
                     </PrimaryButton>
                 </div>
             </form>

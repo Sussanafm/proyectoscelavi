@@ -1,17 +1,30 @@
 import {router} from "@inertiajs/react";
 import Swal from "sweetalert2";
 import {useState} from "react";
+import Boton from "@/Components/Boton.jsx";
+import TooltipButton from "@/Components/TooltipButton.jsx";
+import { faImages, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import TooltipButtonIcon from "@/Components/TooltipButtonIcon.jsx";
 
-export default function Tabla({nombre, campos, filas, datos, crud=true}) {
+
+export default function Tabla({nombre, campos, filas, datos, columnas, crud=true}) {
     // console.log(`nombre de tabla ${nombre}`);
     // console.log(`Campos  ${campos}`);
-    // console.log(`Filas  ${filas}`);
+    console.log(`Filas  ${filas}`);
+    console.log(`Columnas  ${columnas}`);
     const handlenuevaFila = () => {
         console.log("en nueva Fila")
         // Inertia::get("proyectos");
 
         router.get(`${nombre}/create`);
     }
+
+    const handleEditGallery = (id) => {
+        // Inertia::get("proyectos");
+
+        router.get(`galeria/${id}/index`);
+    }
+
     const handleEdit = (id) => {
         console.log("en nueva Fila")
         // Inertia::get("proyectos");
@@ -25,10 +38,12 @@ export default function Tabla({nombre, campos, filas, datos, crud=true}) {
             text: "No podrás revertir esto!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, bórralo!',
-            cancelButtonText: 'Cancelar'
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'swal-confirm-custom',
+                cancelButton: 'swal-cancel-custom'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log("borrando ");
@@ -77,49 +92,57 @@ export default function Tabla({nombre, campos, filas, datos, crud=true}) {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center h-full p-5">
-                <div className="flex flex-row">
-
-                    <h1 className="text-4xl text-green-700 ,t-4"> Listado de {nombre}</h1>
-                    {crud && (<button onClick={handlenuevaFila} className="btn btn-sm btn-primary m-2">Añadir {nombre}</button>)}
+            <div className="flex flex-col items-center justify-center p-5">
+                <div className="flex flex-row items-center justify-between w-full px-20">
+                    <h1 className="text-4xl text-secondary-600">Listado de {nombre}</h1>
+                    {crud && (
+                        <Boton onClick={handlenuevaFila}>
+                            Añadir {nombre}
+                        </Boton>
+                    )}
                 </div>
-                <div className="overflow-x-auto h-full">
+
+                <div className="overflow-x-auto h-full w-full">
                     {datos && (
-                    <table className="table table-auto table-xs table-pin-rows table-pin-cols">
+                        <table className="table table-auto table-pin-rows table-pin-cols bg-white table-zebra table-lg min-w-full sm:min-w-0">
                         <thead>
                         <tr>
-                            {campos.map((campo, index) => (
-                                <th key={index}>
-                                    <button className="btn btn-sm btn-primary" onClick={(e) => ordenar(e,campo)}>
-                                        {campo}
-                                        {orden.campo===campo &&(
-                                            orden.ascendente? ' ▲': ' ▼')}
-                                    </button>
+                            {columnas.map((columna, index) => (
+                                <th key={index} className={`text-center ${index > 1 ? 'ocultar-columna sm:table-cell' : ''}`}>
+                                <TooltipButton
+                                        key={index}
+                                        message={`Ordenar por ${columna}`}
+                                        onClick={ordenar}
+                                        columna={columna}
+                                        orden={orden}
+                                        campos={campos}
+                                        index={index}
+                                    />
                                 </th>
                             ))}
-                            <td></td>
-                            <td></td>
+                            {nombre === "acabados" && (
+                                <th></th>
+                            )}
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {filasOrdenadas.map((fila) => (
                             <tr key={fila.id}>
                                 {campos.map((campo, indexCampo) => (
-                                    <td key={indexCampo}>
-                                        {campo === 'avatar' ? (
-                                            <div className="avatar">
-                                                <div className="avatar">
-                                                    <div className="w-10 rounded-full">
-                                                        <img src={fila[campo]} alt="Avatar"/>
-                                                    </div>
+                                    <td key={indexCampo} className={`text-center ${indexCampo > 1 ? 'ocultar-columna sm:table-cell' : ''}`}>
+                                        {campo === 'imagen' ? (
+                                            <div className="flex justify-center items-center h-32">  {/* Ajusta la altura según tus necesidades */}
+                                                <div className="w-20 mx-auto">
+                                                    <img src={`/storage/${fila[campo]}`} alt="Imagen" className="block mx-auto" />
                                                 </div>
-
                                             </div>
-                                        ) :(campo=="url" ? (
-                                            <a href={fila[campo]} target="_blank"
+                                        ) : (campo == "url" ? (
+                                            <a href={`/storage/${fila[campo]}`} target="_blank"
                                                rel="noopener noreferrer">{fila[campo]}</a>
 
-                                        ):(
+                                        ) : (
                                             fila[campo]
                                         ))}
                                     </td>
@@ -127,28 +150,17 @@ export default function Tabla({nombre, campos, filas, datos, crud=true}) {
                                 {/*Editar*/}
                                 {crud &&(
                                     <>
-                                        <td>
-                                            <button onClick={() => handleEdit(fila.id)}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                     strokeWidth={1.5}
-                                                     stroke="currentColor" className="w-6 h-6 text-blue-600">
-                                                    <path strokeLinecap="round" strokeLinejoin="round"
-                                                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
-                                                </svg>
-                                            </button>
-
+                                        {nombre === "acabados" && (
+                                            <td className="w-20">
+                                                <TooltipButtonIcon onClick={() => handleEditGallery(fila.id)} icon={faImages} message={"Ordenar Galería"} />
+                                            </td>
+                                        )}
+                                        <td className="w-20">
+                                            <TooltipButtonIcon onClick={() => handleEdit(fila.id)} icon={faEdit} message={'Editar'} />
                                         </td>
-                                        {/*Borrar*/}
 
-                                        <td>
-                                            <button onClick={() => handleDelete(fila.id)}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                     viewBox="0 0 24 24" strokeWidth={1.5}
-                                                     stroke="currentColor" className="w-6 h-6 text-red-700">
-                                                    <path strokeLinecap="round" strokeLinejoin="round"
-                                                          d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/>
-                                                </svg>
-                                            </button>
+                                        <td className="w-20">
+                                            <TooltipButtonIcon onClick={() => handleDelete(fila.id)} icon={faTrash} message={'Eliminar'} />
                                         </td>
                                     </>
                                 )}
@@ -159,8 +171,8 @@ export default function Tabla({nombre, campos, filas, datos, crud=true}) {
                     </table>
                     )}
                     {!datos && (
-                        <div>
-                            <p> No existen datos</p>
+                        <div className="bg-white mt-40 w-full h-40 flex items-center justify-center">
+                            <p className="text-2xl font-medium">No existen datos</p>
                         </div>
                     )}
                 </div>

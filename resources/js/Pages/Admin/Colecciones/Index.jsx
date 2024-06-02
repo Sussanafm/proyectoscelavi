@@ -2,7 +2,7 @@ import Tabla from "@/Components/Tabla.jsx";
 import {Head, Link} from "@inertiajs/react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function Index({auth, tabla, campos, filas, datos}){
+export default function Index({auth, tabla, campos, filas, datos, columnas}){
     console.log(`usuario ${auth.user}`);
     console.log(`nombre de tabla ${tabla}`);
     console.log(`Campos  ${campos}`);
@@ -19,7 +19,7 @@ export default function Index({auth, tabla, campos, filas, datos}){
         >
             <Head title="Listado Colecciones" />
 
-            <Tabla campos={campos} filas={filas} nombre={tabla} datos={datos} />
+            <Tabla campos={campos} filas={filas} nombre={tabla} datos={datos} columnas={columnas} />
 
 
         </AuthenticatedLayout>

@@ -46,7 +46,7 @@ export default function DeleteUserForm({ className = '' }) {
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Eliminar cuenta</h2>
+                <h2 className="text-lg font-medium text-primary-600">Eliminar cuenta</h2>
 
                 <p className="mt-1 text-sm text-gray-600">
                     Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados de forma permanente. Antes de eliminar tu cuenta, por favor descarga cualquier dato o información que desees conservar.
@@ -57,7 +57,7 @@ export default function DeleteUserForm({ className = '' }) {
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
+                    <h2 className="text-lg font-medium text-primary-600">
                         ¿Estás seguro que quieres eliminar tu cuenta?
                     </h2>
 

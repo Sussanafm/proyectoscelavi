@@ -1,0 +1,32 @@
+
+.swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 500px;
+    height: 500px;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+}
+
+/* Estilo para el punto de paginación activo */
+.swiper-pagination-bullet-active {
+    background-color: var(--secondary);
+}
+
+.swiper-slide .text-overlay {
+    position: absolute;
+    color: var(--terciary);
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    pointer-events: none; /* Para asegurar de que el texto no interfiera con el control del slider */
+}

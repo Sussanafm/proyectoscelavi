@@ -3,9 +3,13 @@ import TextInput from "@/Components/TextInput.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 import InputError from "@/Components/InputError.jsx";
 import {useForm, router, Link, Head} from "@inertiajs/react";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 import Swal from "sweetalert2";
+import BotonPrimary from "@/Components/BotonPrimary.jsx";
+import BotonSecondary from "@/Components/BotonSecondary.jsx";
+import ImageInput from "@/Components/ImageInput.jsx";
+import TooltipButtonIcon from "@/Components/TooltipButtonIcon.jsx";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer}) {
@@ -13,42 +17,104 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
     console.log("Componente edit.jsx")
     console.log(fila)
 
-    const  handleCancel=()=>{
-        console.log("Create->método handleCancel");
-
-        router.get(`/admin/${nombre}`)
-    }
-    const handleUpdate = (id) => {
-        Swal.fire({
-            title: `¿Confirmas la actualización?`,
-            text: "Los datos se modificarán",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, cambialo!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log("actualizando ");
-                router.put(`/admin/${nombre}/${id}`,data)
-            }
-        });
-    }
-
-
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, setError } = useForm({
         nombre: fila.nombre || "",
         formato: fila.formato || "",
         thickness: fila.thickness || "",
         wearlayer: fila.wearlayer || "",
         typology: fila.typology || "",
         total_thickness: fila.total_thickness || "",
+        imagen: fila.imagen || null,
+        imagen_new: null,
     });
 
     const options_formato = formatos.map(formato => ({ value: formato, label: formato, key: formato }));
     const options_thickness = thickness.map(thickness => ({ value: thickness, label: thickness, key:thickness }));
     const options_wearlayer = wearlayer.map(wearlayer => ({ value: wearlayer, label: wearlayer, key:wearlayer }));
+
+    const handleImageChange = (files) => {
+        setData('imagen_new', files[0]); // Asignar el primer archivo
+    };
+    const  handleCancel=()=>{
+        console.log("Create->método handleCancel");
+
+        router.get(`/admin/${nombre}`)
+    }
+    const validate = () => {
+        let valid = true;
+        if (!data.nombre) {
+            setError('nombre', 'El nombre es requerido');
+            valid = false;
+        }
+        if (!data.typology) {
+            setError('typology', 'La tipología es requerida');
+            valid = false;
+        }
+
+        return valid;
+    };
+    const handleUpdate = (id) => {
+        if (!validate()) {
+            return;
+        }
+
+        Swal.fire({
+            title: `¿Confirmas la actualización?`,
+            text: "Los datos se modificarán",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cambialo!',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'swal-confirm-custom',
+                cancelButton: 'swal-cancel-custom'
+            }
+        }).then((result) => {
+                if (result.isConfirmed) {
+                    try {
+                        console.log("actualizando ");
+                        const formData = new FormData(); // Crear un nuevo objeto FormData para el formulario
+
+                        // Agregar los campos del formulario al objeto FormData
+                        formData.append('nombre', data.nombre);
+                        formData.append('formato', data.formato);
+                        formData.append('thickness', data.thickness);
+                        formData.append('wearlayer', data.wearlayer);
+                        formData.append('typology', data.typology);
+                        formData.append('total_thickness', data.total_thickness);
+
+                        // Agregar la imagen al objeto FormData si está presente
+                        if (data.imagen_new) {
+                            formData.append('imagen_new', data.imagen_new);
+                        }
+                        // Enviar la solicitud usando Axios
+                        /*axios.put(`/admin/${nombre}/${id}`, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(response => {
+                            console.log("datos actualizados")
+                        }).catch(error => {
+                            console.log("error al actualizar los datos", error.message)
+                        });*/
+
+                        router.put(`/admin/${nombre}/${id}`, data);
+                    } catch (error) {
+                        console.error('Error durante la actualización:', error.response?.data || error.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'No has añadido algún dato requerido',
+                            text: 'Comprueba que has introducido todos los datos.',
+                            confirmButtonText: 'Cerrar',
+                            customClass: {
+                                confirmButton: 'swal-confirm-custom'
+                            }
+                        });
+                    }
+                }
+
+        });
+    }
 
     return (
         <AuthenticatedLayout
@@ -64,9 +130,11 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
             <Head title="Edición de Colecciones" />
 
             <div className=" flex flex-row justify-center items-center p-8 h-full">
-                <form onSubmit={(e)=>e.preventDefault()} action="" method="POST" className="bg-white rounded p-5">
-
-                    <div>
+                <form onSubmit={(e)=>e.preventDefault()} action="" method="POST" className="bg-white rounded p-5 w-90v">
+                    <div className="flex flex-row justify-center">
+                        <h1 className="text-4xl text-secondary-600 ">Edición de colecciones</h1>
+                    </div>
+                    <div className="mt-6">
                         <InputLabel htmlFor="nombre" value="Nombre"/>
                         <TextInput
                             id="nombre"
@@ -80,7 +148,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.nombre && <InputError message={errors.nombre} className="mt-2"/>}
                     </div>
 
-                    <div>
+                    <div className="mt-6">
                         <InputLabel htmlFor="formato" value="Formato"/>
 
                         <SelectInput
@@ -96,7 +164,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.formato && <InputError message={errors.formato} className="mt-2"/>}
                     </div>
 
-                    <div>
+                    <div className="mt-6">
                         <InputLabel htmlFor="thickness" value="Thickness"/>
 
                         <SelectInput
@@ -112,7 +180,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.thickness && <InputError message={errors.thickness} className="mt-2"/>}
                     </div>
 
-                    <div>
+                    <div className="mt-6">
                         <InputLabel htmlFor="wearlayer" value="Wearlayer"/>
 
                         <SelectInput
@@ -128,7 +196,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.wearlayer && <InputError message={errors.wearlayer} className="mt-2"/>}
                     </div>
 
-                    <div>
+                    <div className="mt-6">
                         <InputLabel htmlFor="typology" value="Typology"/>
                         <TextInput
                             id="typology"
@@ -142,7 +210,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.typology && <InputError message={errors.typology} className="mt-2"/>}
                     </div>
 
-                    <div>
+                    <div className="mt-6">
                         <InputLabel htmlFor="total_thickness" value="Total Thickness"/>
 
                         <SelectInput
@@ -158,16 +226,35 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.total_thickness && <InputError message={errors.total_thickness} className="mt-2"/>}
                     </div>
 
+                    <div className="mt-6">
+                        <InputLabel htmlFor="imagen_new" value="Imágen" />
+                        <ImageInput
+                            name="imagen_new"
+                            multiple={false}
+                            onChange={handleImageChange}
 
-                    <div className="p-4 m-4">
+                        />
+                        {errors.imagen_new && <InputError message={errors.imagen_new} className="mt-2" />}
+                    </div>
 
-                        <PrimaryButton onClick={()=>handleUpdate(fila.id)} className="p-4 ms-4"
-                                       disabled={processing}>
+                    <div className="mt-6">
+                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                    <img
+                                        src={data.imagen}
+                                        alt="Imagen coleccion"
+                                        style={{ maxWidth: '200px', height: 'auto' }}
+                                    />
+                        </div>
+                    </div>
+
+                    <div className="p-4 m-4 flex justify-center space-x-8">
+                        <BotonPrimary onClick={()=>handleUpdate(fila.id)}>
                             Guardar
-                        </PrimaryButton>
-                        <PrimaryButton onClick={handleCancel} className="p-4 ms-4" disabled={processing}>
+                        </BotonPrimary>
+
+                        <BotonSecondary onClick={handleCancel}>
                             Cancelar
-                        </PrimaryButton>
+                        </BotonSecondary>
                     </div>
                 </form>
             </div>

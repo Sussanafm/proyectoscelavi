@@ -1,18 +1,29 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import HeaderLayout from "@/Layouts/Front/HeaderLayout.jsx";
+import MainLayout from "@/Layouts/Front/MainLayout.jsx";
+import FooterLayout from "@/Layouts/Front/FooterLayout.jsx";
 
-export default function Guest({ children }) {
+export default function Guest({ user, laravelVersion, phpVersion, header, children, imageUrl }) {
+    console.log(imageUrl);
+
     return (
-        <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
-                </Link>
+        <>
+            <div className="bg-primary-light text-black/50 dark:bg-black dark:text-white/50 relative">
+                <img
+                    id="background"
+                    src={imageUrl}
+                    alt="Imagen de suelo vinilo SENSATION de Scelavi"
+                />
+                <div className="min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white relative z-10">
+                    <HeaderLayout user={user} header={header} />
+                    <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+                        <MainLayout>
+                            {children}
+                        </MainLayout>
+                    </div>
+                    <FooterLayout laravelVersion={laravelVersion} phpVersion={phpVersion}/>
+                </div>
             </div>
 
-            <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {children}
-            </div>
-        </div>
+        </>
     );
 }

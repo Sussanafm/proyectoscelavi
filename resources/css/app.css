@@ -1,3 +1,130 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*************************         Colores y botones       ***************************/
+:root {
+    --primary: #957250;
+    --primary-light: #b18f6e;
+    --secondary: #3B3938;
+    --secondary-light: #6d6a68;
+    --terciary: #D9D7D5;
+    --terciary-dark: #98928d;
+}
+
+.text-primary-600, .text-secondary-600, .text-terciary-600 {
+    font-weight: 600;
+}
+
+.btn{
+    border-radius: unset;
+}
+
+.icon-black {
+    color: var(--secondary);
+}
+
+.swal-confirm-custom {
+    background-color: var(--primary)!important; /* Cambia el color de fondo del botón de confirmación */
+    border-radius: 0!important;
+}
+.swal-confirm-custom:hover {
+    background-color: var(--primary-light)!important; /* Cambia el color de fondo del botón de confirmación */
+}
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
+    box-shadow: 0 0 0 0!important;
+}
+
+.swal-cancel-custom {
+    background-color: var(--secondary)!important; /* Cambia el color de fondo del botón de cancelación */
+    border-radius: 0!important;
+}
+
+.swal-cancel-custom:hover {
+    background-color: var(--secondary-light)!important; /* Cambia el color de fondo del botón de cancelación */
+
+}
+li{
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+@media (hover: hover) {
+    .breadcrumbs > ul > li > a:hover, .breadcrumbs > ol > li > a:hover {
+        text-decoration-line: none;
+        color: var(--primary);
+    }
+}
+
+/******************          Panel de administración            ************************/
+
+.main-boxarea:hover .boxarea .boxarea-img {
+    transform: scale(1.1);
+    transition: all .4s ease-in-out;
+}
+
+.main-boxarea .boxarea {
+    position: relative;
+    overflow: hidden;
+    background: var(--terciary);
+}
+
+.main-boxarea .boxarea .boxarea-img {
+    transition: all .4s ease-in-out;
+    position: relative;
+    z-index: 2;
+}
+
+.main-boxarea .boxarea .boxarea-img img {
+    height: auto;
+    width: 500px;
+    object-fit: cover;
+    transition: all .4s ease-in-out;
+    position: relative;
+    z-index: 1;
+}
+
+.main-boxarea .boxarea-content {
+    background: var(--primary-light);
+    box-shadow: 0px 10px 48px 0px rgba(0, 0, 0, 0.09);
+    padding: 20px;
+    z-index: 2;
+    width: 100%;
+    bottom: -50px;
+    margin-bottom: 30px;
+}
+
+.main-boxarea .boxarea-content a {
+    font-size: 1.2rem;
+    font-weight: bolder;
+    transition: all .4s ease-in-out;
+    text-transform: uppercase;
+}
+
+@media (hover: hover) {
+    .main-boxarea .boxarea-content a:hover {
+        text-decoration-line: none;
+        font-size: 1rem;
+        transition: all .4s ease-in-out;
+    }
+}
+
+@media (max-width: 1280px) {
+    .main-boxarea {
+        margin-bottom: 100px;
+    }
+    .p-6.flex.flex-wrap.justify-between {
+        justify-content: center; /* Centrar los elementos en la pantalla */
+    }
+}
+
+/* Ocultar las columnas con la clase "ocultar-columna" en pantallas menores de 800px */
+@media (max-width: 1024px) {
+    .ocultar-columna {
+        display: none;
+    }
+}
+
+/*********************  FRONT *****************************/
+

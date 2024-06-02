@@ -11,7 +11,7 @@
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
-        "axios": "^1.6.4",
+        "axios": "^1.7.2",
         "daisyui": "^4.11.1",
         "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.31",
@@ -21,7 +21,15 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@emotion/react": "^11.11.4",
+        "@emotion/styled": "^11.11.5",
+        "@fortawesome/fontawesome-svg-core": "^6.5.2",
+        "@fortawesome/free-solid-svg-icons": "^6.5.2",
+        "@fortawesome/react-fontawesome": "^0.2.2",
         "@inertiajs/inertia": "^0.11.1",
-        "sweetalert2": "^11.11.0"
+        "@mui/material": "^5.15.18",
+        "react-beautiful-dnd": "^13.1.1",
+        "sweetalert2": "^11.11.0",
+        "swiper": "^11.1.4"
     }
 }

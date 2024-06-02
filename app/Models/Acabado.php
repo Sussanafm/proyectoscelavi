@@ -15,10 +15,10 @@ class Acabado extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nombre',
         'coleccion_id',
-        'descripcion',
+        'nombre',
         'color',
+        'descripcion',
         'precio_m2',
     ];
 
@@ -30,5 +30,20 @@ class Acabado extends Model
     public function imagenes()
     {
         return $this->hasMany(Galeria::class);
+    }
+    /**
+     * Get the column names for the table.
+     *
+     * @return array
+     */
+    public static function getColumnNames()
+    {
+        return [
+            'Colección',
+            'Nombre',
+            'Color',
+            'Descripción',
+            'Precio/m2',
+        ];
     }
 }

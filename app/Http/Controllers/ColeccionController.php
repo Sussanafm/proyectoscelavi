@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Coleccion;
 use App\Http\Requests\StoreColeccionRequest;
 use App\Http\Requests\UpdateColeccionRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use mysql_xdevapi\Collection;
 
@@ -18,13 +20,15 @@ class ColeccionController extends Controller
         $filas = Coleccion::all();
         if (!$filas->isEmpty()) {
             $campos = $filas[0]->getFillable();
+            $columnas = Coleccion::getColumnNames();
             $datos=true;
         }else{
             $campos=[];
+            $columnas=[];
             $datos=false;
         }
         $tabla="colecciones";
-        return Inertia::render('Admin/Colecciones/Index', compact('tabla','campos','filas','datos'));
+        return Inertia::render('Admin/Colecciones/Index', compact('tabla','campos','filas','datos','columnas'));
 
     }
 
@@ -45,7 +49,24 @@ class ColeccionController extends Controller
      */
     public function store(StoreColeccionRequest $request)
     {
-        $coleccion = new Coleccion($request->input());
+        $validatedData = $request->validated();
+        $coleccion = new Coleccion($validatedData);
+
+
+        if ($request->hasFile('imagen')) {
+            $imagen= $request->file('imagen');
+
+            // Obtener la extensión original de la imagen
+            $extension = $imagen->getClientOriginalExtension();
+
+            // Construir el nombre del archivo
+            $fileName = $request->input("nombre") . '_' . uniqid() . '.' . $extension;
+
+            // Almacenar la imagen con el nombre de archivo personalizado
+            $path = $imagen->storeAs('images/colecciones', $fileName, 'public');
+            $coleccion->imagen = $path;
+        }
+
         $coleccion->save();
         return redirect (route('colecciones.index'));
     }
@@ -63,23 +84,53 @@ class ColeccionController extends Controller
      */
     public function edit(Coleccion $coleccion)
     {
-        info("ColeccionController => create");
+        info("ColeccionController => edit");
         info ($coleccion);
         $formatos=config("formatos");
         $thickness=config("thickness");
         $wearlayer=config("wearlayer");
+
+        $coleccion->imagen=asset('storage/' . $coleccion->imagen);
         return Inertia::render('Admin/Colecciones/Edit',['fila'=>$coleccion,'nombre'=>"colecciones",'formatos'=>$formatos,'thickness'=>$thickness,'wearlayer'=>$wearlayer]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateColeccionRequest $request, Coleccion $coleccion)
     {
-        $datos = $request->input();
-        $coleccion->update($datos);
-        return redirect (route('colecciones.index'));
+        try {
+            Log::info('Solicitud de actualización recibida', ['request_data' => $request->all()]);
+            // Validar los datos de la solicitud
+            $validatedData = $request->validated();
+
+            // Actualizar la colección con los datos validados
+            $coleccion->update($validatedData);
+
+            // Procesar las imágenes nuevas si existen
+            if ($request->hasFile('imagen_new')) {
+                $imagen = $request->file('imagen_new');
+
+                // Obtener la extensión original de la imagen
+                $extension = $imagen->getClientOriginalExtension();
+
+                // Construir el nombre del archivo
+                $fileName = $request->input("nombre") . '_' . uniqid() . '.' . $extension;
+
+                // Almacenar la imagen con el nombre de archivo personalizado
+                $path = $imagen->storeAs('images/colecciones', $fileName, 'public');
+                $coleccion->imagen = $path;
+
+                // Guardar el cambio en la colección
+                $coleccion->update();
+            }
+
+            // Redirigir con un mensaje de éxito
+            return redirect(route('colecciones.index'))->with('success', 'Colección actualizada con éxito.');
+        } catch (\Exception $e) {
+            // Registrar el error para depuración
+            Log::error('Error al actualizar la colección: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar la colección.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -89,4 +140,5 @@ class ColeccionController extends Controller
         $coleccion->delete();
         return redirect (route('colecciones.index'));
     }
+
 }

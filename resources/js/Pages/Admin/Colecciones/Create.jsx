@@ -3,36 +3,16 @@ import TextInput from "@/Components/TextInput.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 import InputError from "@/Components/InputError.jsx";
 import {Head, Link, useForm} from "@inertiajs/react";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import { router } from '@inertiajs/react'
 import SelectInput from "@/Components/SelectInput.jsx";
+import BotonPrimary from "@/Components/BotonPrimary.jsx";
+import BotonSecondary from "@/Components/BotonSecondary.jsx";
+import ImageInput from "@/Components/ImageInput.jsx";
 
 
 export default function Create({auth, formatos, thickness, wearlayer }) {
 
-    const  handleCancel=()=> {
-        console.log("Create->método handleCancel");
-
-        router.get("/admin/colecciones")
-    }
-    const handleSave = () => {
-        post(route('colecciones.store'), {
-            preserveScroll: true, // Esta opción mantiene la posición del scroll después de la carga
-            onSuccess: () => {
-                // Manejar éxito de la petición POST
-                console.log('Datos enviados con éxito');
-                // Podrías redirigir a otra página o realizar otras acciones aquí
-            },
-            onError: (errors) => {
-                // Manejar errores de la petición POST
-                console.error('Error al enviar datos:', errors);
-            },
-        });
-    };
-
-
-
-    console.log("Componente Create.jsx")
+    console.log("Componente coleccion Create.jsx")
     const { data, setData, post, processing, errors, reset } = useForm({
         nombre: "",
         formato: "",
@@ -40,11 +20,49 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
         wearlayer: "",
         typology: "",
         total_thickness:"",
+        imagen: null,
     });
 
     const options_formato = formatos.map(formato => ({ value: formato, label: formato, key: formato }));
     const options_thickness = thickness.map(thickness => ({ value: thickness, label: thickness, key:thickness }));
     const options_wearlayer = wearlayer.map(wearlayer => ({ value: wearlayer, label: wearlayer, key:wearlayer }));
+
+    const handleImageChange = (files) => {
+        setData('imagen', files[0]); // Asignar el primer archivo
+    };
+
+    const  handleCancel=()=> {
+        console.log("Create->método handleCancel");
+
+        router.get("/admin/colecciones")
+    }
+    const handleSave = () => {
+        const formData = new FormData(); // Crear un nuevo objeto FormData para el formulario
+
+        // Agregar los campos del formulario al objeto FormData
+        formData.append('nombre', data.nombre);
+        formData.append('formato', data.formato);
+        formData.append('thickness', data.thickness);
+        formData.append('wearlayer', data.wearlayer);
+        formData.append('typology', data.typology);
+        formData.append('total_thickness', data.total_thickness);
+
+        // Agregar la imagen al objeto FormData si está presente
+        if (data.imagen) {
+            formData.append('imagen', data.imagen);
+        }
+
+        // Realizar la solicitud POST con los datos del formulario
+        post(route('colecciones.store'), formData, {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log('Datos enviados con éxito');
+            },
+            onError: (errors) => {
+                console.error('Error al enviar datos:', errors);
+            },
+        });
+    };
 
 
     return (
@@ -62,9 +80,11 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
             <Head title="Creación de Colecciones" />
 
             <div className=" flex flex-row justify-center items-center p-8 h-full">
-                    <form onSubmit={(e)=>e.preventDefault()} action="" method="POST" className="bg-white rounded p-5">
-
-                        <div>
+                    <form onSubmit={(e)=>e.preventDefault()} action="" method="POST" className="bg-white rounded p-5 w-90v">
+                        <div className="flex flex-row justify-center">
+                            <h1 className="text-4xl text-secondary-600 ">Creación de Colecciones</h1>
+                        </div>
+                        <div className="mt-6">
                             <InputLabel htmlFor="nombre" value="Nombre"/>
                             <TextInput
                                 id="nombre"
@@ -78,7 +98,7 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                             {errors.nombre && <InputError message={errors.nombre} className="mt-2"/>}
                         </div>
 
-                        <div>
+                        <div className="mt-6">
                             <InputLabel htmlFor="formato" value="Formato"/>
 
                             <SelectInput
@@ -94,7 +114,7 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                             {errors.formato && <InputError message={errors.formato} className="mt-2"/>}
                         </div>
 
-                        <div>
+                        <div className="mt-6">
                             <InputLabel htmlFor="thickness" value="Thickness"/>
 
                             <SelectInput
@@ -110,7 +130,7 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                             {errors.thickness && <InputError message={errors.thickness} className="mt-2"/>}
                         </div>
 
-                        <div>
+                        <div className="mt-6">
                             <InputLabel htmlFor="wearlayer" value="Wearlayer"/>
 
                             <SelectInput
@@ -126,7 +146,7 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                             {errors.wearlayer && <InputError message={errors.wearlayer} className="mt-2"/>}
                         </div>
 
-                        <div>
+                        <div className="mt-6">
                             <InputLabel htmlFor="typology" value="Typology"/>
                             <TextInput
                                 id="typology"
@@ -140,7 +160,7 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                             {errors.typology && <InputError message={errors.typology} className="mt-2"/>}
                         </div>
 
-                        <div>
+                        <div className="mt-6">
                             <InputLabel htmlFor="total_thickness" value="Total Thickness"/>
 
                             <SelectInput
@@ -156,13 +176,24 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                             {errors.total_thickness && <InputError message={errors.total_thickness} className="mt-2"/>}
                         </div>
 
-                        <div className="p-4 m-4">
-                            <PrimaryButton onClick={handleSave}  className="p-4 ms-4" disabled={processing}>
+                        <div className="mt-6">
+                            <InputLabel htmlFor="imagen" value="Imágen" />
+                            <ImageInput
+                                name="imagenes"
+                                multiple={false}
+                                onChange={handleImageChange}
+                            />
+                            {errors.imagen && <InputError message={errors.imagen} className="mt-2" />}
+                        </div>
+
+                        <div className="p-4 m-4 flex justify-center space-x-8">
+                            <BotonPrimary onClick={handleSave}>
                                 Guardar
-                            </PrimaryButton>
-                            <PrimaryButton onClick={handleCancel} className="p-4 ms-4" disabled={processing}>
+                            </BotonPrimary>
+
+                            <BotonSecondary onClick={handleCancel}>
                                 Cancelar
-                            </PrimaryButton>
+                            </BotonSecondary>
                         </div>
                     </form>
             </div>

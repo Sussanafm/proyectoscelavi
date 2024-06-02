@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("imagen");
             $table->foreignId("acabado_id")->constrained()->cascadeOnDelete();
+            $table->integer("order")->default(0);
             $table->timestamps();
 
         });
