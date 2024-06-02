@@ -12,6 +12,7 @@ export default function Index({ auth, laravelVersion, phpVersion, imageUrl, imag
 
     const sliderElement = document.getElementById('slider-component');
 
+    console.log(imagenes);
     return (
         <Guest user={auth.user} laravelVersion={laravelVersion} phpVersion={phpVersion}
                header={<Link
@@ -28,7 +29,13 @@ export default function Index({ auth, laravelVersion, phpVersion, imageUrl, imag
             </div>
 
             <div className="flex justify-center">
+                {imagenes.length > 0 ? (
                     <SliderComponent imagenes={imagenes} />
+                ) : (
+                    <div className="bg-white mt-40 w-full h-40 flex items-center justify-center">
+                        <p className="text-2xl font-medium">EL CATÁLOGO ESTÁ VACÍO</p>
+                    </div>
+                )}
             </div>
         </Guest>
     );
