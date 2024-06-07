@@ -88,7 +88,7 @@ class AcabadoController extends Controller
                 $galeria->save();
             }
         }
-
+        session()->flash("success","Se ha creado el acabado $acabado->nombre");
         return redirect (route('acabados.index'));
     }
 
@@ -131,6 +131,7 @@ class AcabadoController extends Controller
         // Actualización de los campos del acabado
         $acabado->update($validatedData);
 
+        session()->flash("success","Se ha actualizado el acabado $acabado->nombre");
         // Redirigir con un mensaje de éxito
         return response()->json(['message' => 'Imágenes agregadas con éxito.']);
     }

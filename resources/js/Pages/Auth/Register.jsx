@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import BotonSecondary from "@/Components/BotonSecondary.jsx";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,7 +29,7 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="Registrarse" />
 
             <form onSubmit={submit}>
                 <div>
@@ -83,7 +84,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="confirmar Contraseña" />
+                    <InputLabel htmlFor="password_confirmation" value="Confirmar contraseña" />
 
                     <TextInput
                         id="password_confirmation"
@@ -107,9 +108,9 @@ export default function Register() {
                         ¿Ya estás registrado?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <BotonSecondary className="ms-4" disabled={processing}>
                         Registrarse
-                    </PrimaryButton>
+                    </BotonSecondary>
                 </div>
             </form>
         </GuestLayout>

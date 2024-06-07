@@ -29,8 +29,8 @@ const ImageInput = ({ name, label, multiple=true, onChange }) => {
                 image.src = e.target.result;
                 image.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const maxWidth = 200; // Define el ancho máximo deseado para la imagen
-                    const maxHeight = 200; // Define la altura máxima deseada para la imagen
+                    const maxWidth = 500; // Define el ancho máximo deseado para la imagen
+                    const maxHeight = 500; // Define la altura máxima deseada para la imagen
                     let width = image.width;
                     let height = image.height;
 
@@ -69,7 +69,7 @@ const ImageInput = ({ name, label, multiple=true, onChange }) => {
             <input type="file" id={name} name={name} accept="image/*" onChange={handleImageChange} multiple={multiple} />
             {files.map((file, index) => (
                 <div key={index}>
-                    <img src={URL.createObjectURL(file)} alt="Preview" className="image-preview" />
+                    <img src={URL.createObjectURL(file)} alt="Preview" className="image-preview w-1/4" />
                     <input type="hidden" name={`${name}[${index}]`} value={file.name} />
                 </div>
             ))}

@@ -1,0 +1,14 @@
+<?php
+return[
+    "AUD",
+    "CHF",
+    "CNY",
+    "EUR",
+    "GBP",
+    "HKD",
+    "MXN",
+    "PHP",
+    "SGD",
+    "USD",
+    "BTC"
+];

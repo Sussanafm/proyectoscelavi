@@ -7,6 +7,7 @@ use App\Http\Requests\StoreColeccionRequest;
 use App\Http\Requests\UpdateColeccionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use mysql_xdevapi\Collection;
 
@@ -68,6 +69,7 @@ class ColeccionController extends Controller
         }
 
         $coleccion->save();
+        session()->flash("success","Se ha creado la colección $coleccion->nombre");
         return redirect (route('colecciones.index'));
     }
 
@@ -105,8 +107,13 @@ class ColeccionController extends Controller
             $coleccion->update($validatedData);
 
             // Procesar las imágenes nuevas si existen
-            if ($request->hasFile('imagen_new')) {
-                $imagen = $request->file('imagen_new');
+            if ($request->hasFile('imagen')) {
+
+                if ($coleccion->imagen) {
+                    Storage::disk('public')->delete($coleccion->imagen);
+                }
+
+                $imagen = $request->file('imagen');
 
                 // Obtener la extensión original de la imagen
                 $extension = $imagen->getClientOriginalExtension();
@@ -119,10 +126,11 @@ class ColeccionController extends Controller
                 $coleccion->imagen = $path;
 
                 // Guardar el cambio en la colección
-                $coleccion->update();
+                $coleccion->save();
             }
 
             // Redirigir con un mensaje de éxito
+            session()->flash("success","Se ha actualizado la colección $coleccion->nombre");
             return redirect(route('colecciones.index'))->with('success', 'Colección actualizada con éxito.');
         } catch (\Exception $e) {
             // Registrar el error para depuración

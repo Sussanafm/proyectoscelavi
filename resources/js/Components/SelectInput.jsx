@@ -13,7 +13,7 @@ const SelectInput = forwardRef(({ options, className = '', isFocused = false, pl
         <select
             {...props}
             className={
-                'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' +
+                'border-gray-300 focus:border-terciary-dark focus:ring-terciary-dark shadow-sm ' +
                 className
             }
             ref={ref || selectRef}

@@ -1,16 +1,35 @@
 import {Head, Link} from '@inertiajs/react';
 import Guest from "@/Layouts/GuestLayout.jsx";
-import SliderComponent from "@/Components/SliderComponent.jsx";
+import React, {useEffect, useState} from "react";
 
-export default function Index({ auth, laravelVersion, phpVersion, imageUrl, acabados, nombre }) {
-    const handleImageError = () => {
-        document.getElementById('screenshot-container')?.classList.add('!hidden');
-        document.getElementById('docs-card')?.classList.add('!row-span-1');
-        document.getElementById('docs-card-content')?.classList.add('!flex-row');
-        document.getElementById('background')?.classList.add('!hidden');
+
+export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, acabados, nombre }) {
+
+    const [acabadoData, setAcabadoData] = useState({});
+
+    const showAcabado = async (id) => {
+        try {
+            const response = await axios.get(`/acabado/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching acabado:', error);
+            return null;
+        }
     };
+    useEffect(() => {
+        const fetchAcabadosData = async () => {
+            const data = {};
+            for (let acabado of acabados) {
+                const acabadoInfo = await showAcabado(acabado.id);
+                if (acabadoInfo) {
+                    data[acabado.id] = acabadoInfo;
+                }
+            }
+            setAcabadoData(data);
+        };
 
-    const sliderElement = document.getElementById('slider-component');
+        fetchAcabadosData();
+    }, [acabados]);
 
     return (
         <Guest user={auth.user} laravelVersion={laravelVersion} phpVersion={phpVersion}
@@ -22,13 +41,33 @@ export default function Index({ auth, laravelVersion, phpVersion, imageUrl, acab
                </Link>}
                imageUrl={imageUrl}>
 
-            <Head title="Vinilo " />
+            <Head title={`Vinilo ${nombre}`} />
             <div className="absolute top-[-250px] left-0 w-full text-center py-8 hidden md:block">
-                <h1 className="text-xl md:text-8xl text-terciary font-bold uppercase">{nombre}</h1>
+                <h1 className="text-xl md:text-8xl text-terciary font-bold uppercase">
+                    <a href="/" title="Ir a catálogo">Colección</a> > {nombre}
+                </h1>
             </div>
 
             <div className="flex justify-center">
-
+                {acabados.length > 0 ? (
+                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+                        {acabados.map((acabado, index) => (
+                            <div>
+                                <a href={`/acabado/${acabado.id}/${nombre}/${acabado.nombre}`}>
+                                <img
+                                    key={index}
+                                    src={`/storage/${acabadoData[acabado.id] ? acabadoData[acabado.id].imagen : '/images/acabados/empty.jpg'}`}
+                                    alt={`Imagen ${acabado.nombre}`}
+                                    className={``}
+                                />
+                                <div className="text-overlay">{acabado.nombre}</div>
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <img src="/storage/images/acabados/empty.jpg" alt="No hay imágen"/>
+                )}
             </div>
         </Guest>
     );

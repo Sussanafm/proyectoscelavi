@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
-import './styles.css';
+import '../../css/SliderComponent.css';
 import {Link} from "@inertiajs/react";
 
 const SliderComponent = ({imagenes}) => {
@@ -27,7 +27,7 @@ const SliderComponent = ({imagenes}) => {
         >
             {imagenes.map((imagen, index) => (
                 <SwiperSlide key={index}>
-                    <Link href={`/coleccion/${imagen.id}/${imagen.nombre}`}><img src={`/storage/${imagen.imagen}`} alt={`Slide ${index + 1}`} /></Link>
+                    <a href={`/coleccion/${imagen.id}/${imagen.nombre}`}><img src={`/storage/${imagen.imagen}`} alt={`Slide ${index + 1}`} /></a>
                     <div className="text-overlay">{imagen.nombre}</div>
                 </SwiperSlide>
             ))}

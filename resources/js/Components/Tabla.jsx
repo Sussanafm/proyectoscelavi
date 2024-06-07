@@ -1,4 +1,4 @@
-import {router} from "@inertiajs/react";
+import {router, usePage} from "@inertiajs/react";
 import Swal from "sweetalert2";
 import {useState} from "react";
 import Boton from "@/Components/Boton.jsx";
@@ -12,6 +12,9 @@ export default function Tabla({nombre, campos, filas, datos, columnas, crud=true
     // console.log(`Campos  ${campos}`);
     console.log(`Filas  ${filas}`);
     console.log(`Columnas  ${columnas}`);
+
+    //Recojo la variable de sesión
+    const success = usePage().props.success;
     const handlenuevaFila = () => {
         console.log("en nueva Fila")
         // Inertia::get("proyectos");
@@ -93,6 +96,12 @@ export default function Tabla({nombre, campos, filas, datos, columnas, crud=true
     return (
         <>
             <div className="flex flex-col items-center justify-center p-5">
+                {success && (
+                    <div role="alert" className="alert" style={{ borderRadius: '0', backgroundColor: 'var(--primary-light)' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-info shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path  strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>{success}</span>
+                    </div>
+                )}
                 <div className="flex flex-row items-center justify-between w-full px-20">
                     <h1 className="text-4xl text-secondary-600">Listado de {nombre}</h1>
                     {crud && (

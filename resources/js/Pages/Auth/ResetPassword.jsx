@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import BotonSecondary from "@/Components/BotonSecondary.jsx";
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,7 +29,7 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout>
-            <Head title="Reset Password" />
+            <Head title="Cambiar contraseña" />
 
             <form onSubmit={submit}>
                 <div>
@@ -81,9 +82,9 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <BotonSecondary className="ms-4" disabled={processing}>
                         Restablecer contraseña
-                    </PrimaryButton>
+                    </BotonSecondary>
                 </div>
             </form>
         </GuestLayout>

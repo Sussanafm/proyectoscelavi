@@ -17,7 +17,7 @@ export default {
             },
             colors:{
                 'primary': '#957250', // Color primario
-                'primary-light': '#b18f6e', // Color primario más claro
+                'primary-light': '#bfa388', // Color primario más claro
                 'secondary': '#3B3938', // Color secundario
                 'secondary-light': '#6d6a68', // Color secundario más claro
                 'terciary': '#D9D7D5', // Color terciario

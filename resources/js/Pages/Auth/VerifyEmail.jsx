@@ -1,6 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayoutOld.jsx';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
+import BotonSecondary from "@/Components/BotonSecondary.jsx";
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
@@ -13,7 +14,7 @@ export default function VerifyEmail({ status }) {
 
     return (
         <GuestLayout>
-            <Head title="Email Verification" />
+            <Head title="Verificar Email" />
 
             <div className="mb-4 text-sm text-gray-600">
                 ¡Gracias por registrarte! Antes de comenzar, ¿podrías verificar tu dirección de correo electrónico haciendo clic en el enlace que te acabamos de enviar? Si no recibiste el correo electrónico, con gusto te enviaremos otro.
@@ -27,7 +28,7 @@ export default function VerifyEmail({ status }) {
 
             <form onSubmit={submit}>
                 <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>Reenviar correo electrónico de verificación</PrimaryButton>
+                    <BotonSecondary disabled={processing}>Reenviar correo electrónico de verificación</BotonSecondary>
 
                     <Link
                         href={route('logout')}

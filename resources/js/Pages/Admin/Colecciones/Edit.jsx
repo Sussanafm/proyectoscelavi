@@ -8,8 +8,8 @@ import Swal from "sweetalert2";
 import BotonPrimary from "@/Components/BotonPrimary.jsx";
 import BotonSecondary from "@/Components/BotonSecondary.jsx";
 import ImageInput from "@/Components/ImageInput.jsx";
-import TooltipButtonIcon from "@/Components/TooltipButtonIcon.jsx";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
+
 
 
 export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer}) {
@@ -17,7 +17,9 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
     console.log("Componente edit.jsx")
     console.log(fila)
 
-    const { data, setData, post, processing, errors, reset, setError } = useForm({
+    const [existeImagen, setExisteImagen] = useState(false); // Define existeImagen como estado inicial false
+
+    const { data, setData, put, processing, errors, reset, setError } = useForm({
         nombre: fila.nombre || "",
         formato: fila.formato || "",
         thickness: fila.thickness || "",
@@ -34,6 +36,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
 
     const handleImageChange = (files) => {
         setData('imagen_new', files[0]); // Asignar el primer archivo
+        setExisteImagen(true); // Establecer existeImagen como true
     };
     const  handleCancel=()=>{
         console.log("Create->método handleCancel");
@@ -53,12 +56,12 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
 
         return valid;
     };
-    const handleUpdate = (id) => {
+    const handleUpdate = async (id) => {
         if (!validate()) {
             return;
         }
 
-        Swal.fire({
+        const result = await Swal.fire({
             title: `¿Confirmas la actualización?`,
             text: "Los datos se modificarán",
             icon: 'warning',
@@ -69,52 +72,53 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                 confirmButton: 'swal-confirm-custom',
                 cancelButton: 'swal-cancel-custom'
             }
-        }).then((result) => {
-                if (result.isConfirmed) {
-                    try {
-                        console.log("actualizando ");
-                        const formData = new FormData(); // Crear un nuevo objeto FormData para el formulario
+        });
 
-                        // Agregar los campos del formulario al objeto FormData
-                        formData.append('nombre', data.nombre);
-                        formData.append('formato', data.formato);
-                        formData.append('thickness', data.thickness);
-                        formData.append('wearlayer', data.wearlayer);
-                        formData.append('typology', data.typology);
-                        formData.append('total_thickness', data.total_thickness);
+        if (result.isConfirmed) {
+            try {
+                console.log("actualizando ");
+                // Crear un nuevo objeto FormData para el formulario
+                const formData = new FormData();
 
-                        // Agregar la imagen al objeto FormData si está presente
-                        if (data.imagen_new) {
-                            formData.append('imagen_new', data.imagen_new);
-                        }
-                        // Enviar la solicitud usando Axios
-                        /*axios.put(`/admin/${nombre}/${id}`, formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        }).then(response => {
-                            console.log("datos actualizados")
-                        }).catch(error => {
-                            console.log("error al actualizar los datos", error.message)
-                        });*/
+                // Agregar los campos del formulario al objeto FormData
+                formData.append('nombre', data.nombre);
+                formData.append('formato', data.formato);
+                formData.append('thickness', data.thickness);
+                formData.append('wearlayer', data.wearlayer);
+                formData.append('typology', data.typology);
+                formData.append('total_thickness', data.total_thickness);
 
-                        router.put(`/admin/${nombre}/${id}`, data);
-                    } catch (error) {
-                        console.error('Error durante la actualización:', error.response?.data || error.message);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'No has añadido algún dato requerido',
-                            text: 'Comprueba que has introducido todos los datos.',
-                            confirmButtonText: 'Cerrar',
-                            customClass: {
-                                confirmButton: 'swal-confirm-custom'
-                            }
-                        });
-                    }
+                // Agregar la imagen al objeto FormData si está presente
+                if (data.imagen_new) {
+                    formData.append('imagen', data.imagen_new);
                 }
 
-        });
-    }
+                console.log('FormData:', Array.from(formData.entries())); // Log de contenidos de FormData
+
+                // Enviar la solicitud usando Axios
+                await axios.put(`/admin/${nombre}/${id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                console.log("datos actualizados");
+                //router.put(`/admin/${nombre}/${id}`, data);
+
+            } catch (error) {
+                console.error('Error durante la actualización:', error.response?.data || error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No has añadido algún dato requerido',
+                    text: 'Comprueba que has introducido todos los datos.',
+                    confirmButtonText: 'Cerrar',
+                    customClass: {
+                        confirmButton: 'swal-confirm-custom'
+                    }
+                });
+            }
+        }
+    };
 
     return (
         <AuthenticatedLayout
@@ -130,7 +134,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
             <Head title="Edición de Colecciones" />
 
             <div className=" flex flex-row justify-center items-center p-8 h-full">
-                <form onSubmit={(e)=>e.preventDefault()} action="" method="POST" className="bg-white rounded p-5 w-90v">
+                <form onSubmit={(e)=>e.preventDefault()} className="bg-white rounded p-5 w-90v">
                     <div className="flex flex-row justify-center">
                         <h1 className="text-4xl text-secondary-600 ">Edición de colecciones</h1>
                     </div>
@@ -237,15 +241,18 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                         {errors.imagen_new && <InputError message={errors.imagen_new} className="mt-2" />}
                     </div>
 
-                    <div className="mt-6">
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                                    <img
-                                        src={data.imagen}
-                                        alt="Imagen coleccion"
-                                        style={{ maxWidth: '200px', height: 'auto' }}
-                                    />
+                    {!existeImagen && (
+                        <div className="mt-6">
+                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                <img
+                                    src={data.imagen}
+                                    alt="Imagen coleccion"
+                                    style={{ maxWidth: '200px', height: 'auto' }}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
+
 
                     <div className="p-4 m-4 flex justify-center space-x-8">
                         <BotonPrimary onClick={()=>handleUpdate(fila.id)}>
