@@ -239,6 +239,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
 
                         />
                         {errors.imagen_new && <InputError message={errors.imagen_new} className="mt-2" />}
+                        <p className="text-xs">Tamaño recomendado imagen 500x500 (px)</p>
                     </div>
 
                     {!existeImagen && (

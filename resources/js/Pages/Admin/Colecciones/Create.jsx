@@ -184,6 +184,7 @@ export default function Create({auth, formatos, thickness, wearlayer }) {
                                 onChange={handleImageChange}
                             />
                             {errors.imagen && <InputError message={errors.imagen} className="mt-2" />}
+                            <p className="text-xs">Tamaño recomendado imagen 500x500 (px)</p>
                         </div>
 
                         <div className="p-4 m-4 flex justify-center space-x-8">
