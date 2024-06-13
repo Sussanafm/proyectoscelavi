@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useRef } from 'react';
 
-const SelectInput = forwardRef(({ options, className = '', isFocused = false, placeholder = 'Seleccionar', ...props }, ref) => {
+const SelectInput = forwardRef(({ options, className = '', isFocused = false, placeholder = 'Seleccionar', defaultValue = '', ...props }, ref) => {
     const selectRef = useRef(null);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const SelectInput = forwardRef(({ options, className = '', isFocused = false, pl
                 className
             }
             ref={ref || selectRef}
-            defaultValue=""
+            defaultValue={defaultValue}
         >
             <option value="" disabled>{placeholder}</option>
             {options.map((option, index) => (

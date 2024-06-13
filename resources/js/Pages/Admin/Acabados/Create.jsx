@@ -93,7 +93,7 @@ export default function Create({auth, colecciones, colores }) {
                             options={options_colecciones}
                             className="mt-1 block w-30v"
                             isFocused={true}
-                            value={data.coleccion_id}
+                            defaultValue={data.coleccion_id}
                             onChange={(e) => setData('coleccion_id', e.target.value)}
                         />
                         {errors.coleccion_id && <InputError message={errors.coleccion_id} className="mt-2"/>}
@@ -138,7 +138,7 @@ export default function Create({auth, colecciones, colores }) {
                                 options={options_colores}
                                 className="mt-1 block w-30v"
                                 isFocused={true}
-                                value={data.color}
+                                defaultValue={data.color}
                                 onChange={(e) => setData('color', e.target.value)}
                             />
                             {errors.color && <InputError message={errors.color} className="mt-2"/>}

@@ -162,7 +162,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                             options={options_formato}
                             className="mt-1 block w-full"
                             isFocused={true}
-                            value={data.formato}
+                            defaultValue={data.formato}
                             onChange={(e) => setData('formato', e.target.value)}
                         />
                         {errors.formato && <InputError message={errors.formato} className="mt-2"/>}
@@ -178,7 +178,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                             options={options_thickness}
                             className="mt-1 block w-full"
                             isFocused={true}
-                            value={data.thickness}
+                            defaultValue={data.thickness}
                             onChange={(e) => setData('thickness', e.target.value)}
                         />
                         {errors.thickness && <InputError message={errors.thickness} className="mt-2"/>}
@@ -194,7 +194,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                             options={options_wearlayer}
                             className="mt-1 block w-full"
                             isFocused={true}
-                            value={data.wearlayer}
+                            defaultValue={data.wearlayer}
                             onChange={(e) => setData('wearlayer', e.target.value)}
                         />
                         {errors.wearlayer && <InputError message={errors.wearlayer} className="mt-2"/>}
@@ -224,7 +224,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                             options={options_thickness}
                             className="mt-1 block w-full"
                             isFocused={true}
-                            value={data.total_thickness}
+                            defaultValue={data.total_thickness}
                             onChange={(e) => setData('total_thickness', e.target.value)}
                         />
                         {errors.total_thickness && <InputError message={errors.total_thickness} className="mt-2"/>}

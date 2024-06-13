@@ -1,20 +1,24 @@
-
-.swiper {
+.mySwiper {
     width: 100%;
     padding-top: 50px;
     padding-bottom: 50px;
 }
 
 .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-position: center;
     background-size: cover;
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
 }
 
 .swiper-slide img {
     display: block;
     width: 100%;
+    height: auto;
 }
 
 /* Estilo para el punto de paginación activo */
@@ -24,9 +28,27 @@
 
 .swiper-slide .text-overlay {
     position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     color: var(--terciary);
-    font-size: 24px;
+    font-size: 1rem;
     font-weight: bold;
+    text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    pointer-events: none; /* Para asegurar de que el texto no interfiera con el control del slider */
+    padding: 10px;
+    pointer-events: none; /* Para asegurar que el texto no interfiera con el control del slider */
+}
+
+@media (min-width: 768px) {
+    .swiper-slide .text-overlay {
+        font-size: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .swiper-slide .text-overlay {
+        font-size: 1.5rem;
+    }
 }

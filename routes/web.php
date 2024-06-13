@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Coleccion;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -26,19 +27,23 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get("/admin", function(){
-    return Inertia::render("Admin/Index");
+    // Verificar si la tabla 'colecciones' está vacía
+    $isEmpty = Coleccion::count() === 0;
+    return Inertia::render("Admin/Index", [
+        'isEmpty' => $isEmpty
+    ]);
 })->middleware(['auth', 'verified'])->name('admin.index');
 
 Route::resource("admin/colecciones", \App\Http\Controllers\ColeccionController::class)->middleware(['auth', 'verified'])->parameters(['colecciones' => 'coleccion']);
 Route::resource("admin/acabados", \App\Http\Controllers\AcabadoController::class)->middleware(['auth', 'verified']);
 
-Route::delete('/imagenes/{id}', [\App\Http\Controllers\GaleriaController::class, 'destroy'])->name('imagenes.destroy');
+Route::delete('/imagenes/{id}', [\App\Http\Controllers\GaleriaController::class, 'destroy'])->name('imagenes.destroy')->middleware(['auth', 'verified']);
 
 
-Route::get('/admin/galeria/{acabado}/index', [\App\Http\Controllers\GaleriaController::class, 'index'])->name('imagenes.index');
-Route::put('/admin/galeria/ordenar', [\App\Http\Controllers\GaleriaController::class, 'ordenar'])->name('imagenes.ordenar');
+Route::get('/admin/galeria/{acabado}/index', [\App\Http\Controllers\GaleriaController::class, 'index'])->name('imagenes.index')->middleware(['auth', 'verified']);
+Route::put('/admin/galeria/ordenar', [\App\Http\Controllers\GaleriaController::class, 'ordenar'])->name('imagenes.ordenar')->middleware(['auth', 'verified']);
 
-Route::post('/admin/acabados/{acabado}/imagenes', [\App\Http\Controllers\AcabadoController::class, 'storeImages'])->name('acabados.storeImages');
+Route::post('/admin/acabados/{acabado}/imagenes', [\App\Http\Controllers\AcabadoController::class, 'storeImages'])->name('acabados.storeImages')->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

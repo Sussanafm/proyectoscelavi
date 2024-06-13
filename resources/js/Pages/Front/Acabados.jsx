@@ -50,12 +50,11 @@ export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, a
 
             <div className="flex justify-center">
                 {acabados.length > 0 ? (
-                    <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+                    <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
                         {acabados.map((acabado, index) => (
-                            <div>
+                            <div key={acabado.id}  className="mb-8 lg:mb-4">
                                 <a href={`/acabado/${acabado.id}/${nombre}/${acabado.nombre}`}>
                                 <img
-                                    key={index}
                                     src={`/storage/${acabadoData[acabado.id] ? acabadoData[acabado.id].imagen : '/images/acabados/empty.jpg'}`}
                                     alt={`Imagen ${acabado.nombre}`}
                                     className={``}

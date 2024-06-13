@@ -87,7 +87,7 @@ export default function Tabla({nombre, campos, filas, datos, columnas, coleccion
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="flex flex-col items-center justify-center p-5">
                 <div className="flex flex-row items-center justify-center w-full px-20">
-                    <h1 className="text-4xl text-secondary-600">Ordenar {nombre} {coleccion}</h1>
+                    <h1 className="text-4xl text-secondary-600 mb-4">Ordenar {nombre} {coleccion}</h1>
                 </div>
 
                 <div className="overflow-x-auto h-full w-full">

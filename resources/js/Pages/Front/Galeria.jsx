@@ -1,7 +1,7 @@
 import {Head, Link, useForm} from '@inertiajs/react';
 import Guest from "@/Layouts/GuestLayout.jsx";
 import React, {useEffect, useState} from "react";
-import SliderComponent from "@/Components/SliderInfiniteComponent.jsx";
+import SliderInfiniteComponent from "@/Components/SliderInfiniteComponent.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 import axios from "axios";
 
@@ -62,9 +62,11 @@ export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, a
 
             <div className="flex justify-center">
                 {galeria.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-10">
-                        <SliderComponent imagenes={galeria} />
-                        <div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div className="col-span-1">
+                            <SliderInfiniteComponent imagenes={galeria} />
+                        </div>
+                        <div className="col-span-1">
                             <h2 className="text-lg md:text-6xl text-secondary font-bold mb-4">Vinilo {coleccion.nombre} {acabados.nombre}</h2>
                             <p className="ml-3 text-lg">Tamaño: {coleccion.formato}</p>
                             <p className="ml-3 text-lg">Tickness: {coleccion.thickness}</p>
@@ -84,7 +86,7 @@ export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, a
                                             options={options_monedas}
                                             className="mt-1 block w-10v bg-primary-light"
                                             isFocused={true}
-                                            value={moneda}
+                                            defaultValue={moneda}
                                             onChange={handleChange}
                                         />
                                     </div>

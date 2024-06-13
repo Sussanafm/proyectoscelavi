@@ -5,9 +5,8 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import '../../css/SliderComponent.css';
-import {Link} from "@inertiajs/react";
 
-const SliderComponent = ({imagenes}) => {
+const SliderComponent = ({ imagenes }) => {
     return (
         <Swiper
             effect={'coverflow'}
@@ -26,8 +25,14 @@ const SliderComponent = ({imagenes}) => {
             className="mySwiper"
         >
             {imagenes.map((imagen, index) => (
-                <SwiperSlide key={index}>
-                    <a href={`/coleccion/${imagen.id}/${imagen.nombre}`}><img src={`/storage/${imagen.imagen}`} alt={`Slide ${index + 1}`} /></a>
+                <SwiperSlide key={index} className="relative">
+                    <a href={`/coleccion/${imagen.id}/${imagen.nombre}`}>
+                        <img
+                            src={`/storage/${imagen.imagen}`}
+                            alt={`Slide ${index + 1}`}
+                            className="object-cover w-full h-64 md:h-80 lg:h-96"
+                        />
+                    </a>
                     <div className="text-overlay">{imagen.nombre}</div>
                 </SwiperSlide>
             ))}
@@ -36,5 +41,3 @@ const SliderComponent = ({imagenes}) => {
 };
 
 export default SliderComponent;
-
-

@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link} from '@inertiajs/react';
 
-export default function Index({ auth }) {
+export default function Index({ auth, isEmpty }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -19,7 +19,9 @@ export default function Index({ auth }) {
                             <div className="main-boxarea">
                                 <div className="boxarea">
                                     <div className="boxarea-img">
+                                        <Link href={route('colecciones.index')}>
                                         <img src="/storage/images/img/COLORADO-CEMENT-mockup_new.jpg" alt="Imagen Colecciones"/>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="boxarea-content text-center h-20">
@@ -28,19 +30,23 @@ export default function Index({ auth }) {
                                     </Link>
                                 </div>
                             </div>
-
-                            <div className="main-boxarea">
-                                <div className="boxarea">
-                                    <div className="boxarea-img">
-                                        <img src="/storage/images/img/SCELAVI-VOSS-GREY_MOCKUP.jpg" alt="Imagen Acabados"/>
+                            {!isEmpty && (
+                                <div className="main-boxarea">
+                                    <div className="boxarea">
+                                        <div className="boxarea-img">
+                                            <Link href={route('acabados.index')}>
+                                            <img src="/storage/images/img/SCELAVI-VOSS-GREY_MOCKUP.jpg"
+                                                 alt="Imagen Acabados"/>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="boxarea-content text-center h-20">
+                                        <Link href={route('acabados.index')}>
+                                            Acabados
+                                        </Link>
                                     </div>
                                 </div>
-                                <div className="boxarea-content text-center h-20">
-                                    <Link href={route('acabados.index')}>
-                                        Acabados
-                                    </Link>
-                                </div>
-                            </div>
+                            )}
 
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import {Head, Link} from '@inertiajs/react';
 import Guest from "@/Layouts/GuestLayout.jsx";
 import SliderComponent from "@/Components/SliderComponent.jsx";
 
+
 export default function Index({ auth, laravelVersion, phpVersion, imageUrl, imagenes }) {
     const handleImageError = () => {
         document.getElementById('screenshot-container')?.classList.add('!hidden');
@@ -37,6 +38,8 @@ export default function Index({ auth, laravelVersion, phpVersion, imageUrl, imag
                     </div>
                 )}
             </div>
+
+
         </Guest>
     );
 }
