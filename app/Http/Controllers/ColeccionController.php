@@ -99,21 +99,58 @@ class ColeccionController extends Controller
     public function update(UpdateColeccionRequest $request, Coleccion $coleccion)
     {
         try {
-            Log::info('Solicitud de actualización recibida', ['request_data' => $request->all()]);
+            Log::info('Solicitud de actualización recibida', ['request_data' => $request->input()]);
             // Validar los datos de la solicitud
             $validatedData = $request->validated();
 
             // Actualizar la colección con los datos validados
             $coleccion->update($validatedData);
 
-            // Procesar las imágenes nuevas si existen
-            if ($request->hasFile('imagen')) {
+            // Redirigir con un mensaje de éxito
+            session()->flash("success","Se ha actualizado la colección $coleccion->nombre");
+            return response()->json(['message' => 'Colección actualizada con éxito.']);
+            //return redirect(route('colecciones.index'))->with('success', 'Colección actualizada con éxito.');
+        } catch (\Exception $e) {
+            // Registrar el error para depuración
+            Log::error('Error al actualizar la colección: ' . $e->getMessage());
+            Log::info('Solicitud de actualización recibida', ['request_data' => $request->all()]);
+            //return redirect()->back()->with('error', 'Ocurrió un error al actualizar la colección.');
+            return response()->json(['message' => 'Ocurrió un error al actualizar la colección.']);
+        }
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Coleccion $coleccion)
+    {
+        $coleccion->delete();
+        return redirect (route('colecciones.index'));
+    }
+
+    /**
+     * Almacenar una nueva imagen para el acabado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Acabado  $acabado
+     */
+    public function updateImage(Request $request, Coleccion $coleccion)
+    {
+        try {
+            // Validar las imágenes enviadas
+            $request->validate([
+                'imagen_new.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            // Procesar las imágen nueva si existe
+            if ($request->hasFile('imagen_new')) {
 
                 if ($coleccion->imagen) {
                     Storage::disk('public')->delete($coleccion->imagen);
                 }
 
-                $imagen = $request->file('imagen');
+                $imagen = $request->file('imagen_new');
 
                 // Obtener la extensión original de la imagen
                 $extension = $imagen->getClientOriginalExtension();
@@ -126,27 +163,16 @@ class ColeccionController extends Controller
                 $coleccion->imagen = $path;
 
                 // Guardar el cambio en la colección
-                $coleccion->save();
+                $coleccion->update();
             }
 
             // Redirigir con un mensaje de éxito
-            session()->flash("success","Se ha actualizado la colección $coleccion->nombre");
-            return redirect(route('colecciones.index'))->with('success', 'Colección actualizada con éxito.');
+            return response()->json(['message' => 'Imágen modificada con éxito.']);
         } catch (\Exception $e) {
             // Registrar el error para depuración
-            Log::error('Error al actualizar la colección: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Ocurrió un error al actualizar la colección.');
+            Log::error('Error al almacenar imágenes: ' . $e->getMessage());
+            return response()->json(['error' => 'Ocurrió un error al guardar la imágen.'], 500);
         }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Coleccion $coleccion)
-    {
-        $coleccion->delete();
-        return redirect (route('colecciones.index'));
     }
 
 }

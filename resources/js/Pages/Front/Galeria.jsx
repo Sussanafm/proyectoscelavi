@@ -54,12 +54,15 @@ export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, a
                imageUrl={imageUrl}>
 
             <Head title={`Vinilo ${coleccion.nombre} ${acabados.nombre} `} />
-            <div className="absolute top-[-250px] left-0 w-full text-center py-8 hidden md:block">
-                <h1 className="text-xl md:text-8xl text-terciary font-bold uppercase">
-                    <a href={`/coleccion/${coleccion.id}/${coleccion.nombre}`} title="Ir a acabados">{coleccion.nombre}</a> > {acabados.nombre}
+            <div className="absolute top-[-10px] md:top-[-250px] left-0 w-full text-center py-8">
+                <h1 className="sm:text-4xl md:text-8xl text-terciary font-bold uppercase flex items-center justify-center">
+                    <a href={`/coleccion/${coleccion.id}/${coleccion.nombre}`} title="Ir a acabados">{coleccion.nombre}</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 md:w-[1em] md:h-[1em] mx-2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                    {acabados.nombre}
                 </h1>
             </div>
-
             <div className="flex justify-center">
                 {galeria.length > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">

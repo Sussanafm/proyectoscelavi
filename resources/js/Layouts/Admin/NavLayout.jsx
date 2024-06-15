@@ -105,10 +105,10 @@ export default function NavLayout({user}) {
                     </ResponsiveNavLink>
                 </div>
 
-                <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                <div className="pt-4 pb-1 border-t border-terciary dark:border-secondary">
                     <div className="px-4">
-                        <div className="font-medium text-base text-gray-800 dark:text-gray-200">{user.name}</div>
-                        <div className="font-medium text-sm text-gray-500">{user.email}</div>
+                        <div className="font-medium text-base text-secondary-600 dark:text-terciary">{user.name}</div>
+                        <div className="font-medium text-sm text-secondary-600">{user.email}</div>
                     </div>
 
                     <div className="mt-3 space-y-1">

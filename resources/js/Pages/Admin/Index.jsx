@@ -15,7 +15,7 @@ export default function Index({ auth, isEmpty }) {
 
             <div className="py-36">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="p-6 text-gray-900 flex flex-wrap justify-between">
+                    <div className={`p-6 text-gray-900 flex flex-wrap ${isEmpty ? 'justify-center' : 'justify-between'}`}>
                             <div className="main-boxarea">
                                 <div className="boxarea">
                                     <div className="boxarea-img">

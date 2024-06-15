@@ -42,9 +42,13 @@ export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, a
                imageUrl={imageUrl}>
 
             <Head title={`Vinilo ${nombre}`} />
-            <div className="absolute top-[-250px] left-0 w-full text-center py-8 hidden md:block">
-                <h1 className="text-xl md:text-8xl text-terciary font-bold uppercase">
-                    <a href="/" title="Ir a catálogo">Colección</a> > {nombre}
+            <div className="absolute top-[-10px] md:top-[-250px] left-0 w-full text-center py-8">
+                <h1 className="sm:text-4xl md:text-8xl text-terciary font-bold uppercase flex items-center justify-center">
+                    <a href="/" title="Ir a catálogo">Colección</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 md:w-[1em] md:h-[1em] mx-2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                    {nombre}
                 </h1>
             </div>
 
@@ -57,7 +61,7 @@ export default function Acabados({ auth, laravelVersion, phpVersion, imageUrl, a
                                 <img
                                     src={`/storage/${acabadoData[acabado.id] ? acabadoData[acabado.id].imagen : '/images/acabados/empty.jpg'}`}
                                     alt={`Imagen ${acabado.nombre}`}
-                                    className={``}
+                                    className={`w-3/4`}
                                 />
                                 <div className="text-overlay">{acabado.nombre}</div>
                                 </a>

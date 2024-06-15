@@ -9,6 +9,7 @@ import BotonPrimary from "@/Components/BotonPrimary.jsx";
 import BotonSecondary from "@/Components/BotonSecondary.jsx";
 import ImageInput from "@/Components/ImageInput.jsx";
 import {useState} from "react";
+import axios from 'axios';
 
 
 
@@ -19,7 +20,7 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
 
     const [existeImagen, setExisteImagen] = useState(false); // Define existeImagen como estado inicial false
 
-    const { data, setData, put, processing, errors, reset, setError } = useForm({
+    const { data, setData, post, processing, errors, reset, setError } = useForm({
         nombre: fila.nombre || "",
         formato: fila.formato || "",
         thickness: fila.thickness || "",
@@ -80,42 +81,50 @@ export default function Edit({auth, fila, nombre, formatos, thickness, wearlayer
                 // Crear un nuevo objeto FormData para el formulario
                 const formData = new FormData();
 
-                // Agregar los campos del formulario al objeto FormData
-                formData.append('nombre', data.nombre);
-                formData.append('formato', data.formato);
-                formData.append('thickness', data.thickness);
-                formData.append('wearlayer', data.wearlayer);
-                formData.append('typology', data.typology);
-                formData.append('total_thickness', data.total_thickness);
-
                 // Agregar la imagen al objeto FormData si está presente
                 if (data.imagen_new) {
-                    formData.append('imagen', data.imagen_new);
+                    formData.append('imagen_new', data.imagen_new);
+                    // Agregar los campos del formulario al objeto FormData
+                    /*formData.append('nombre', data.nombre);
+                    formData.append('formato', data.formato);
+                    formData.append('thickness', data.thickness);
+                    formData.append('wearlayer', data.wearlayer);
+                    formData.append('typology', data.typology);
+                    formData.append('total_thickness', data.total_thickness);*/
+
+                    console.log('FormData:', Array.from(formData.entries())); // Log de contenidos de FormData
+
+                    // Enviar la solicitud usando Axios
+                    const response = await axios.post(`/admin/${nombre}/${id}/imagen`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
                 }
 
-                console.log('FormData:', Array.from(formData.entries())); // Log de contenidos de FormData
-
-                // Enviar la solicitud usando Axios
-                await axios.put(`/admin/${nombre}/${id}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-
                 console.log("datos actualizados");
+                console.log(data);
                 //router.put(`/admin/${nombre}/${id}`, data);
+                await axios.put(`/admin/${nombre}/${id}`, data);
+
+                window.location.href=("/admin/colecciones");
+
 
             } catch (error) {
-                console.error('Error durante la actualización:', error.response?.data || error.message);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'No has añadido algún dato requerido',
-                    text: 'Comprueba que has introducido todos los datos.',
-                    confirmButtonText: 'Cerrar',
-                    customClass: {
-                        confirmButton: 'swal-confirm-custom'
-                    }
-                });
+                if (error.response && error.response.status === 422) {
+                    console.log('Errores de validación:', error.response.data.errors);
+                } else {
+                    console.error('Error durante la actualización:', error.response?.data || error.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No has añadido algún dato requerido',
+                        text: 'Comprueba que has introducido todos los datos.',
+                        confirmButtonText: 'Cerrar',
+                        customClass: {
+                            confirmButton: 'swal-confirm-custom'
+                        }
+                    });
+                }
             }
         }
     };

@@ -9,20 +9,21 @@
     text-align: center;
     font-size: 18px;
     background: #fff;
-
-    /* Center slide text vertically */
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 500px;  /* Fijar ancho del slide */
-    height: 500px; /* Fijar altura del slide */
+    width: 500px;
+    height: 500px;
+    position: relative; /* Añadir posición relativa para el posicionamiento absoluto del overlay */
 }
 
 .fixed-size-slide img {
     display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: auto; /* Cambiar de 100% a auto para que se ajuste al tamaño real */
+    height: auto; /* Cambiar de 100% a auto para que se ajuste al tamaño real */
+    max-width: 100%; /* Añadir máximo ancho para evitar que la imagen sea más grande que el contenedor */
+    max-height: 100%; /* Añadir máximo alto para evitar que la imagen sea más grande que el contenedor */
+    object-fit: contain; /* Ajustar la imagen dentro del contenedor manteniendo la relación de aspecto */
 }
 
 .text-overlay {

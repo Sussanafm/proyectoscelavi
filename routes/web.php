@@ -44,6 +44,7 @@ Route::get('/admin/galeria/{acabado}/index', [\App\Http\Controllers\GaleriaContr
 Route::put('/admin/galeria/ordenar', [\App\Http\Controllers\GaleriaController::class, 'ordenar'])->name('imagenes.ordenar')->middleware(['auth', 'verified']);
 
 Route::post('/admin/acabados/{acabado}/imagenes', [\App\Http\Controllers\AcabadoController::class, 'storeImages'])->name('acabados.storeImages')->middleware(['auth', 'verified']);
+Route::post('/admin/colecciones/{coleccion}/imagen', [\App\Http\Controllers\ColeccionController::class, 'updateImage'])->name('colecciones.updateImage')->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

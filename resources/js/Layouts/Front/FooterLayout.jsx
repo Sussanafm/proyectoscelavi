@@ -8,7 +8,7 @@ export default function FooterLayout({ laravelVersion, phpVersion }){
                 <a href="/">
                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200 mr-4" />
                 </a>
-                <span className="ml-4">Laravel v{laravelVersion} (PHP v{phpVersion})</span>
+                <span className="ml-4 text-terciary">Laravel v{laravelVersion} (PHP v{phpVersion})</span>
             </div>
         </footer>
 

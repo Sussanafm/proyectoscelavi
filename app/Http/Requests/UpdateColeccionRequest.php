@@ -28,7 +28,6 @@ class UpdateColeccionRequest extends FormRequest
             "wearlayer" => "required|max:255",
             "typology" => "required|max:255",
             "total_thickness" => "required|max:255",
-            'imagen' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 
@@ -52,9 +51,6 @@ class UpdateColeccionRequest extends FormRequest
             'typology.max' => 'El campo tipología no puede exceder de 255 caracteres.',
             'total_thickness.required' => 'El campo grosor total es obligatorio.',
             'total_thickness.max' => 'El campo grosor total no puede exceder de 255 caracteres.',
-            'imagen.image' => 'El archivo debe ser una imagen.',
-            'imagen.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif, svg.',
-            'imagen.max' => 'La imagen no puede exceder de 2048 kilobytes.',
         ];
     }
 }
